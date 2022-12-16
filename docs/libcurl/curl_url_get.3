@@ -79,7 +79,8 @@ encoded to make sure the host name remains valid.
 .IP CURLU_PUNYCODE
 If set and \fICURLU_URLENCODE\fP is not set, and asked to retrieve the
 \fBCURLUPART_HOST\fP or \fBCURLUPART_URL\fP parts, libcurl returns the host
-name punycoded if it contains any non-ASCII octets (and is an IDN name).
+name in its punycode version if it contains any non-ASCII octets (and is an
+IDN name).
 
 If libcurl is built without IDN capabilities, using this bit will make
 \fIcurl_url_get(3)\fP return \fICURLUE_LACKS_IDN\fP if the host name contains
