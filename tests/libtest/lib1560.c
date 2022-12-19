@@ -466,6 +466,10 @@ static const struct testcase get_parts_list[] ={
 };
 
 static const struct urltestcase get_url_list[] = {
+#ifdef USE_IDN
+  {"https://räksmörgås.se/path?q#frag",
+   "https://xn--rksmrgs-5wao1o.se/path?q#frag", 0, CURLU_PUNYCODE, CURLUE_OK},
+#endif
   /* unsupported schemes with no guessing enabled */
   {"data:text/html;charset=utf-8;base64,PCFET0NUWVBFIEhUTUw+PG1ldGEgY",
    "", 0, 0, CURLUE_UNSUPPORTED_SCHEME},
