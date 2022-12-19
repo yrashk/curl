@@ -146,7 +146,9 @@ static const struct testcase get_parts_list[] ={
    "https | [11] | [12] | [13] | xn--rksmrgs-5wao1o.se | "
    "[15] | / | [16] | [17]", 0, CURLU_PUNYCODE, CURLUE_OK},
 #else
-  {"https://räksmörgås.se", "", 0, CURLU_PUNYCODE, CURLUE_LACKS_IDN},
+  {"https://räksmörgås.se",
+   "https | [11] | [12] | [13] | [30] | [15] | / | [16] | [17]",
+   0, CURLU_PUNYCODE, CURLUE_OK},
 #endif
   /* https://ℂᵤⓇℒ。𝐒🄴 */
   {"https://"
