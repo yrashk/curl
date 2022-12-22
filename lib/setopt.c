@@ -3071,19 +3071,29 @@ CURLcode Curl_vsetopt(struct Curl_easy *data, CURLoption option, va_list param)
         return CURLE_OUT_OF_MEMORY;
     }
     argptr = va_arg(param, char *);
-    result = Curl_setstropt(&data->set.str[STRING_HSTS], argptr);
-    if(result)
-      return result;
-    /* this needs to build a list of file names to read from, so that it can
-       read them later, as we might get a shared HSTS handle to load them
-       into */
-    h = curl_slist_append(data->set.hstslist, argptr);
-    if(!h) {
+    if(argptr) {
+      result = Curl_setstropt(&data->set.str[STRING_HSTS], argptr);
+      if(result)
+        return result;
+      /* this needs to build a list of file names to read from, so that it can
+         read them later, as we might get a shared HSTS handle to load them
+         into */
+      h = curl_slist_append(data->set.hstslist, argptr);
+      if(!h) {
+        curl_slist_free_all(data->set.hstslist);
+        data->set.hstslist = NULL;
+        return CURLE_OUT_OF_MEMORY;
+      }
+      data->set.hstslist = h; /* store the list for later use */
+    }
+    else {
+      /* clear the list of HSTS files */
       curl_slist_free_all(data->set.hstslist);
       data->set.hstslist = NULL;
-      return CURLE_OUT_OF_MEMORY;
+      if(!data->share || !data->share->hsts)
+        /* throw away the HSTS cache unless shared */
+        Curl_hsts_cleanup(&data->hsts);
     }
-    data->set.hstslist = h; /* store the list for later use */
     break;
   }
   case CURLOPT_HSTS_CTRL:
