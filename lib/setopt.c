@@ -2264,10 +2264,10 @@ CURLcode Curl_vsetopt(struct Curl_easy *data, CURLoption option, va_list param)
       if(data->share->hsts == data->hsts)
         data->hsts = NULL;
 #endif
-
+#ifdef USE_SSL
       if(data->share->sslsession == data->state.session)
         data->state.session = NULL;
-
+#endif
 #ifdef USE_LIBPSL
       if(data->psl == &data->share->psl)
         data->psl = data->multi? &data->multi->psl: NULL;
